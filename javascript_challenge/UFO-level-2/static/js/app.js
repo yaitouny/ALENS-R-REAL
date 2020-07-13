@@ -6,19 +6,6 @@ console.log(tableData);
 var filterButton = d3.select("#filter-btn");
 // Select the form
 var form = d3.select("#form");
-// var inputField = d3.select(".form-control");
-
-// function handleClick() {
-//   console.log("A button was clicked!");
-//   // console.log(d3.event.target);
-// }
-
-// filterButton.on("click", handleClick);
-
-// inputField.on("change", function () {
-//   var newText = d3.event.target.value;
-//   console.log(newText);
-// });
 
 // Create event handlers for clicking the button or pressing the enter key
 filterButton.on("click", findValue);
@@ -38,17 +25,33 @@ function findValue() {
   console.log(inputValue);
   console.log(tableData);
 
-  var filteredDate = tableData.filter(
-    (tableData) => tableData.datetime === inputValue
-  );
+  // Filter by datetime
+  var filteredData = tableData.filter((x) => x.datetime === inputValue);
+
+  var cityFilter = d3.select("#filteredCity");
+  var countryFilter = d3.select("#filteredCountry");
+  var shapeFilter = d3.select("#filteredShape");
+
+  cityFilter = filteredData.filter((x) => x.city === cityFilter);
+  console.log(cityFilter);
+
+  if (countryFilter != "All") {
+    countryFilter = filteredData.filter((x) => x.country === countryFilter);
+  }
+
+  if (shapeFilter != "All") {
+    shapeFilter = filteredData.filter((x) => x.shape === shapeFilter);
+  }
 
   // use d3 to select the table
   var table = d3.select(".table");
 
   // use d3 to select the table body
   var body = table.select("tbody");
+
+  // Clear existing data
   table.select("tbody").html("");
-  filteredDate.forEach(function (list) {
+  filteredData.forEach(function (list) {
     let newRow = body.append("tr");
     Object.entries(list).forEach(function ([key, value]) {
       newRow.append("td").text(value);
