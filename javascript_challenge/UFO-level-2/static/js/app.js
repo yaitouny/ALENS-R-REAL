@@ -42,14 +42,6 @@ function init() {
       })
     );
   });
-  // tableData.forEach((dataRow) => {
-  //   $("filteredState").append(
-  //     $("<option>", {
-  //       value: dataRow.state,
-  //       value: dataRow.state,
-  //     })
-  //   );
-  // });
 
   tableData.forEach(function (list) {
     let newRow = body.append("tr");
@@ -75,52 +67,64 @@ function findValue() {
   // Prevent the page from refreshing
   d3.event.preventDefault();
 
-  // Select the input element
-  var inputElement = d3.select(".form-control");
-
-  // Get the value property of the input element
-  var inputValue = inputElement.property("value");
+  var inputValue = $("#datetime").val();
+  var cityFilter = $("#filteredState").val();
 
   // Filter by datetime
-  var filteredData = tableData.filter((x) => x.datetime === inputValue);
-  console.log(filteredData);
+  var filteredData = tableData;
 
+  filteredData = tableData.filter((x) => x.datetime === inputValue);
+
+  if (cityFilter != "All") {
+    filteredData = filteredData.filter((x) => x.city === cityFilter);
+  }
   // var cityFilter = d3.select("filteredCity");
   // filteredData = filteredData.map((x) => x.city === cityFilter);
 
-  filteredData.forEach((dataRow) => {
-    console.log(dataRow.city);
-    $("#filteredCity").append(
-      $("<option>", {
-        value: dataRow.city,
-        text: dataRow.city,
-      })
-    );
-  });
+  // filteredData.forEach((dataRow) => {
+  //   console.log(dataRow.city);
+  //   $("#filteredCity").append(
+  //     $("<option>", {
+  //       value: dataRow.city,
+  //       text: dataRow.city,
+  //     })
+  //   );
+  // });
 
-  filteredData.forEach((dataRow) => {
-    $("#filteredShape").append(
-      $("<option", {
-        value: dataRow.shape,
-        text: dataRow.shape,
-      })
-    );
-  });
+  // filteredData.forEach((dataRow) => {
+  //   $("#filteredShape").append(
+  //     $("<option", {
+  //       value: dataRow.shape,
+  //       text: dataRow.shape,
+  //     })
+  //   );
+  // });
 
-  filteredData.forEach((dataRow) => {
-    $("#filteredState").append(
-      $("<option", {
-        value: dataRow.state,
-        text: dataRow.state,
-      })
-    );
-  });
+  // filteredData.forEach((dataRow) => {
+  //   $("#filteredState").append(
+  //     $("<option", {
+  //       value: dataRow.state,
+  //       text: dataRow.state,
+  //     })
+  //   );
+  // });
   // Clear existing data
-  table.select("tbody").html("");
+  // table.select("tbody").html("");
+
+  // filteredData.forEach(function (list) {
+  //   let newRow = body.append("tr");
+  //   Object.entries(list).forEach(function ([key, value]) {
+  //     newRow.append("td").text(value);
+  //   });
+  // });
+
+  $("#ufo-table tbody").empty();
   filteredData.forEach(function (list) {
-    let newRow = body.append("tr");
+    let newRow = "<tr>";
     Object.entries(list).forEach(function ([key, value]) {
-      newRow.append("td").text(value);
+      newRow += `<td>${value}</td>`;
     });
+    newRow += "</tr>";
+    $("#ufo-table tbody").append(newRow);
   });
 }
